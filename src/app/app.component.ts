@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { ElectronService } from './core/services';
-import { TranslateService } from '@ngx-translate/core';
-import { AppConfig } from '../environments/environment';
-import { LoginService } from './shared/services/login.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
+import { AppConfig } from '../environments/environment';
+import { ElectronService } from './core/services';
 
 @Component({
   selector: 'app-root',
@@ -33,6 +32,7 @@ export class AppComponent {
   registerSVGImages(iconRegistry, sanitizer) {
     iconRegistry.addSvgIcon('visibility', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/visibility.svg'));
     iconRegistry.addSvgIcon('visibility_off', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/visibility_off.svg'));
+    iconRegistry.addSvgIcon('logout', sanitizer.bypassSecurityTrustResourceUrl('assets/icons/logout.svg'));
   }
 
 }

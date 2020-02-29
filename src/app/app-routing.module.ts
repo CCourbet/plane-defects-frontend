@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { PageNotFoundComponent } from './shared/components';
-import { LoginComponent } from './login/login.component';
+import { RouterModule, Routes } from '@angular/router';
 import { FormComponent } from './form/form.component';
-import { LoginService } from './shared/services/login.service';
+import { LoginComponent } from './login/login.component';
+import { PageNotFoundComponent } from './shared/components';
+import { AuthGuardService } from './shared/services/auth-guard.service';
 
 const routes: Routes = [
   { path: '', redirectTo: 'form', pathMatch: 'full'},
   { path: 'login', component: LoginComponent },
-  { path: 'form', component: FormComponent, canActivate: [LoginService] },
+  { path: 'form', component: FormComponent, canActivate: [AuthGuardService] },
   { path: '**', component: PageNotFoundComponent}
 ];
 

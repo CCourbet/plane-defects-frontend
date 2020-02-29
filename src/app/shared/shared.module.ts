@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
 import { PageNotFoundComponent } from './components/';
@@ -17,6 +18,7 @@ import { WebviewDirective } from './directives/';
   imports: [
     CommonModule,
     TranslateModule,
+    MatToolbarModule
   ],
   exports: [
     TranslateModule,
@@ -24,6 +26,7 @@ import { WebviewDirective } from './directives/';
     MatFormFieldModule,
     MatCardModule,
     MatIconModule,
+    MatToolbarModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatInputModule,

@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginService } from '../shared/services/login.service';
-
-//import { AuthenticationService } from '../../services/authentication.service';
+import { AuthenticationService } from '../shared/services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +18,7 @@ export class LoginComponent implements OnInit {
   public isLoginWrong = false;
 
   constructor(
-    private loginService: LoginService,
+    private authenticationService: AuthenticationService,
     private router: Router) {
   }
 
@@ -30,14 +28,9 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
     const auth = this.authentication.value;
     if (auth.username && auth.password) {
-      this.loginService.login(auth.username, auth.password).subscribe(
-        (isLogin) => {
-          if (isLogin) {
-            this.router.navigateByUrl('/');
-          } else {
-            this.isLoginWrong = true;
-          }
-        }
+      this.authenticationService.login(auth.username, auth.password).subscribe(
+        success => this.router.navigateByUrl('/'),
+        error => this.isLoginWrong = true
       );
     }
   }

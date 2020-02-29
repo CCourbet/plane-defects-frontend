@@ -1,22 +1,22 @@
-import 'reflect-metadata';
-import '../polyfills';
-
-import { BrowserModule } from '@angular/platform-browser';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { CoreModule } from './core/core.module';
-import { SharedModule } from './shared/shared.module';
-
-import { AppRoutingModule } from './app-routing.module';
-
+import { BrowserModule } from '@angular/platform-browser';
 // NG Translate
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-
+import 'reflect-metadata';
+import '../polyfills';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
+import { CoreModule } from './core/core.module';
 import { FormComponent } from './form/form.component';
+import { LoginComponent } from './login/login.component';
+import { HeaderComponent } from './shared/components/header/header.component';
+import { AuthGuardService } from './shared/services/auth-guard.service';
+import { AuthInterceptorService } from './shared/services/auth-interceptor.service';
+import { AuthenticationService } from './shared/services/authentication.service';
+import { SharedModule } from './shared/shared.module';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -24,7 +24,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 }
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, FormComponent],
+  declarations: [AppComponent, LoginComponent, FormComponent, HeaderComponent],
   imports: [
     BrowserModule,
     FormsModule,
@@ -40,7 +40,15 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
       }
     })
   ],
-  providers: [],
+  providers: [
+    AuthenticationService,
+    AuthGuardService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
