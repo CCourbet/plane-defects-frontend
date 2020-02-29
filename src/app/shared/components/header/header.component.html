@@ -1,0 +1,7 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span>{{'PLANE DEFECT' | translate}}</span>
+      <span class="spacer"></span>
+      <mat-icon *ngIf="isLoggedIn" class="logout" aria-hidden="false" aria-label="Logout" svgIcon="logout" (click)="logout()"></mat-icon>
+    </mat-toolbar-row>
+  </mat-toolbar>
