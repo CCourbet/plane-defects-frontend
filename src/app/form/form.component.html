@@ -1,0 +1,38 @@
+<div class="form">
+    <h2 mat-dialog-title class="title">{{'Describe your defect' | translate }}</h2>
+    <form [formGroup]="defectForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-label>{{'X coordinate' | translate }}</mat-label>
+            <input matInput formControlName="xcoordinate" type="number" required>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-label>{{'Y coordinate' | translate }}</mat-label>
+            <input matInput formControlName="ycoordinate" type="number" required>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-label>{{'Z coordinate' | translate }}</mat-label>
+            <input matInput formControlName="zcoordinate" type="number" required>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-label>{{'Type of defect' | translate }}</mat-label>
+            <mat-select formControlName="defectType">
+                <mat-option *ngFor="let defectType of defectTypes" [value]="defectType.value">
+                    {{defectType.viewValue | translate}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="outline">
+            <mat-label>{{'Comment' | translate }}</mat-label>
+            <textarea matInput formControlName="comment"></textarea>
+        </mat-form-field>
+
+        <div mat-dialog-actions class="submit">
+            <button mat-raised-button color="primary" type="submit">{{'Create' | translate }}</button>
+        </div>
+    </form>
+</div>
