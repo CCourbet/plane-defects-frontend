@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
-
-import { DefectService } from './defect.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-describe('DefectService', () => {
-  let service: DefectService;
+import { UserService } from './user.service';
+
+describe('UserService', () => {
+  let service: UserService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule]
     });
-    service = TestBed.inject(DefectService);
+    service = TestBed.inject(UserService);
   });
 
   it('should be created', () => {

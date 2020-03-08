@@ -1,14 +1,21 @@
-.form {
+%paragraph {
   width: 50%;
   margin: 20px auto auto auto;
   padding: 20px;
   background-color: #fafafa;
+}
+
+.maintenance {
+  @extend %paragraph;
+}
+.form {
+  @extend %paragraph;
 
   .title {
     margin-top: 0;
     text-align: center;
   }
-  
+
   .full-width {
     width: 100%;
   }

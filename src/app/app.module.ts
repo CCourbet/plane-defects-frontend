@@ -9,9 +9,9 @@ import 'reflect-metadata';
 import '../polyfills';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CoreModule } from './core/core.module';
 import { FormComponent } from './form/form.component';
 import { LoginComponent } from './login/login.component';
+import { NewDefectSnackbarComponent } from './new-defect-snackbar/new-defect-snackbar.component';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { AuthGuardService } from './shared/services/auth-guard.service';
 import { AuthInterceptorService } from './shared/services/auth-interceptor.service';
@@ -24,12 +24,11 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 }
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, FormComponent, HeaderComponent],
+  declarations: [AppComponent, LoginComponent, FormComponent, HeaderComponent, NewDefectSnackbarComponent],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    CoreModule,
     SharedModule,
     AppRoutingModule,
     TranslateModule.forRoot({

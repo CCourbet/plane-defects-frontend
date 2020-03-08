@@ -1,11 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Output } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import * as jwtDecode from 'jwt-decode';
-import * as moment from 'moment';
+import { JwtHelperService } from "@auth0/angular-jwt";
+import { Observable, Subscription } from 'rxjs';
 import { shareReplay, tap } from 'rxjs/operators';
-import { JWTPayload } from '../models/JWTPayload.interface';
-import { EventEmitter } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -13,27 +11,58 @@ import { EventEmitter } from '@angular/core';
 export class AuthenticationService {
   @Output() isLoggedEmitter: EventEmitter<boolean> = new EventEmitter();
 
+  // Api for authentication
   private apiRoot = 'http://localhost:8000/auth/';
+
+  private jwtHelper = new JwtHelperService();
 
   constructor(
     private http: HttpClient,
     private router: Router
   ) { }
 
-  private setSession(authResult) {
+  /**
+   * Initialize session
+   * @param authResult Result from authentication request
+   */
+  private setSession(authResult): void {
     const token = authResult.token;
-    const payload = <JWTPayload> jwtDecode(token);
-    const expiresAt = moment.unix(payload.exp);
-    localStorage.setItem('token', authResult.token);
-    localStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
+    const decodedToken = this.jwtHelper.decodeToken(token);
+    const expirationDate = this.jwtHelper.getTokenExpirationDate(token);
+    localStorage.setItem('token', token);
+    localStorage.setItem('user_id', decodedToken.user_id);
+    localStorage.setItem('expires_at', expirationDate.toString());
+
     this.isLoggedEmitter.emit(true);
   }
 
+  /**
+   * Get token from localStorage
+   */
   get token(): string {
     return localStorage.getItem('token');
   }
 
-  login(username: string, password: string) {
+  /**
+   * Get user id from localStorage
+   */
+  get userId(): string {
+    return localStorage.getItem('user_id');
+  }
+
+  /**
+   * Get if user token is expired
+   */
+  get isExpired(): boolean {
+    return this.jwtHelper.isTokenExpired(this.token);
+  }
+
+  /**
+   * Request to login user
+   * @param username 
+   * @param password 
+   */
+  public login(username: string, password: string): Observable<Object> {
     return this.http.post(
       this.apiRoot.concat('login/'),
       { username, password }
@@ -43,16 +72,23 @@ export class AuthenticationService {
     );
   }
 
-  logout() {
+  /**
+   * Remove local storage and redirect to login page on logout
+   */
+  public logout(): void {
     localStorage.removeItem('token');
+    localStorage.removeItem('user_id');
     localStorage.removeItem('expires_at');
 
-    this.isLoggedEmitter.emit(false);
     this.router.navigateByUrl('/login');
+    this.isLoggedEmitter.emit(false);
   }
 
-  refreshToken() {
-    if (moment().isBetween(this.getExpiration().subtract(1, 'days'), this.getExpiration())) {
+  /**
+   * Refresh token when it is expired
+   */
+  public refreshToken(): Subscription {
+    if (this.isExpired) {
       return this.http.post(
         this.apiRoot.concat('refresh-token/'),
         { token: this.token }
@@ -63,18 +99,17 @@ export class AuthenticationService {
     }
   }
 
-  getExpiration() {
-    const expiration = localStorage.getItem('expires_at');
-    const expiresAt = JSON.parse(expiration);
-
-    return moment(expiresAt);
+  /**
+   * Return if the user is logged in
+   */
+  public isLoggedIn(): boolean {
+    return !this.isExpired;
   }
 
-  isLoggedIn() {
-    return moment().isBefore(this.getExpiration());
-  }
-
-  isLoggedOut() {
+  /**
+   * return if the user is logged out
+   */
+  public isLoggedOut(): boolean {
     return !this.isLoggedIn();
   }
 

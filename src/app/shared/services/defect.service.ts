@@ -7,15 +7,15 @@ import { Defect } from '../models/defect.interface';
 })
 export class DefectService {
 
-  private apiRoot = 'http://localhost:8000/';
+  private apiRoot = 'http://localhost:8000/defect/';
 
   constructor(private http: HttpClient) { }
 
-  getDefect() {
-    return this.http.get(this.apiRoot.concat('defect/'));
-  }
-
+  /**
+   * Post defect to database
+   * @param defect to post
+   */
   postDefect(defect: Defect) {
-    return this.http.post(this.apiRoot.concat('defect/'), defect);
+    return this.http.post(this.apiRoot, defect);
   }
 }
