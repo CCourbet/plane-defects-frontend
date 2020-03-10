@@ -126,7 +126,7 @@ export class FormComponent implements OnInit, OnDestroy {
       this.snackBar.openFromComponent(NewDefectSnackbarComponent, {
         data: defect,
         panelClass: ['snackbar-size'],
-        //duration: 10000,
+        duration: 10000,
       })
     }, (error) => {
       switch (error.status) {
